@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>होली की शुभकामनाएँ</title>
+    <style>
+        /* Full-page styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            animation: bgColor 5s infinite alternate;
+        }
+
+        /* Background Color Animation */
+        @keyframes bgColor {
+            0% { background: linear-gradient(to right, #ff9a9e, #fad0c4); }
+            100% { background: linear-gradient(to right, #fbc2eb, #a6c1ee); }
+        }
+
+        /* Typing animation */
+        .typing {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #fff;
+            width: 0;
+            animation: typing 2s steps(20, end) forwards, blink 0.75s step-end infinite;
+            font-size: 24px;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: white; }
+        }
+
+        /* Input field */
+        input {
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            margin-top: 20px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            background-color: #fff;
+            color: black;
+        }
+
+        /* Submit button with hover effect */
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            background: #ff4081;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            background: #e91e63;
+        }
+
+        /* Response animation */
+        #response {
+            margin-top: 30px;
+            font-size: 24px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s ease-in, transform 1s ease-in;
+        }
+
+        /* Firework animation */
+        @keyframes firework {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+        }
+
+        .firework {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, yellow, red);
+            border-radius: 50%;
+            animation: firework 1s ease-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <h2><span class="typing">नमस्ते! आप कौन हैं?</span></h2>
+    <input type="text" id="nameInput" placeholder="अपना नाम लिखें">
+    <br>
+    <button onclick="sendData()">सबमिट करें</button>
+    <h3 id="response"></h3>
+
+    <script>
+        function sendData() {
+            var name = document.getElementById("nameInput").value;
+            if (name === "") {
+                alert("कृपया अपना नाम दर्ज करें!");
+                return;
+            }
+
+            fetch("https://script.google.com/macros/s/AKfycbw5GqEsGcinDkc6jRLYhafu8hDz7U-pqNbUYUtGA-CA9_Sd_mJdm1sFtMEeJLdgb1xC/exec", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.text())
+            .then(data => {
+                var responseElement = document.getElementById("response");
+                responseElement.innerText = data;
+                responseElement.style.opacity = "1";
+                responseElement.style.transform = "translateY(0)";
+
+                // Firework Effect
+                createFireworks();
+            })
+            .catch(error => console.error("त्रुटि हुई:", error));
+        }
+
+        function createFireworks() {
+            for (let i = 0; i < 5; i++) {
+                let firework = document.createElement("div");
+                firework.classList.add("firework");
+                firework.style.left = Math.random() * window.innerWidth + "px";
+                firework.style.top = Math.random() * window.innerHeight + "px";
+                document.body.appendChild(firework);
+
+                setTimeout(() => {
+                    firework.remove();
+                }, 1000);
+            }
+        }
+    </script>
+
+</body>
+</html>
